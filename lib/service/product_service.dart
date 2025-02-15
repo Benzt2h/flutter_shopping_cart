@@ -3,7 +3,7 @@ import 'package:shopping_cart/core/http_service.dart';
 import 'package:shopping_cart/models/product_info.dart';
 
 class ProductService {
-  final HttpService httpService = HttpService();
+  final HttpService _httpService = HttpService();
   final Dio _dio = HttpService().dio;
 
   Future<List<ProductInfo>> getRecommendedProducts() async {
@@ -14,7 +14,7 @@ class ProductService {
           .toList();
       return products;
     } on DioException catch (e) {
-      throw httpService.handleError(e);
+      throw _httpService.handleError(e);
     }
   }
 
@@ -27,7 +27,7 @@ class ProductService {
           .toList();
       return {'items': products, 'nextCursor': response.data['nextCursor']};
     } on DioException catch (e) {
-      throw httpService.handleError(e);
+      throw _httpService.handleError(e);
     }
   }
 }
