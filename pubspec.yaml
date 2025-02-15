@@ -39,7 +39,6 @@ dependencies:
   flutter_screenutil: ^5.9.3
   skeletonizer: ^1.4.3
   persistent_bottom_nav_bar_v2: ^5.3.1
-  pull_to_refresh_flutter3: ^2.0.2
   flutter_slidable: ^4.0.0
 
 dev_dependencies:

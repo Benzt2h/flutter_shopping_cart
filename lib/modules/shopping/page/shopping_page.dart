@@ -12,16 +12,110 @@ class ShoppingPage extends GetView<ShoppingController> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildRecmmend(),
-          ],
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        child: SingleChildScrollView(
+          controller: controller.scrollController,
+          padding: EdgeInsets.only(bottom: 120.h),
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              _buildRecmmend(),
+              _buildLatest(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget _buildLatest() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Latest Products",
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 20.sp),
+            ),
+          ],
+        ),
+        Obx(() => _buildLatestProducts()),
+      ],
+    );
+  }
+
+  Widget _buildLatestProducts() {
+    if (controller.isLoadingLatest.value) {
+      return Skeletonizer(
+        enabled: true,
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return ProductLoadingWidget();
+          },
+        ),
+      );
+    } else if (controller.errorMessageLatest.isNotEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, size: 50.w, color: Colors.red),
+          SizedBox(height: 10.h),
+          Text(
+            "Something went wrong",
+            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10.h),
+          ElevatedButton(
+            onPressed: () {
+              controller.getLatestProducts();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Get.theme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            ),
+            child: Text("Refresh", style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            padding: EdgeInsets.zero,
+            itemCount: controller.latestProducts.length,
+            itemBuilder: (context, index) {
+              ProductInfo productInfo = controller.latestProducts[index];
+              return ProductWidget(productInfo: productInfo);
+            },
+          ),
+          Obx(
+            () => !controller.isLoadingMoreLatest.value
+                ? SizedBox.shrink()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 5.w),
+                      Text("Loading...")
+                    ],
+                  ),
+          ),
+        ],
+      );
+    }
   }
 
   Widget _buildRecmmend() {
@@ -48,6 +142,7 @@ class ShoppingPage extends GetView<ShoppingController> {
         child: ListView.builder(
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
+          padding: EdgeInsets.zero,
           itemCount: 5,
           itemBuilder: (context, index) {
             return ProductLoadingWidget();
@@ -85,6 +180,7 @@ class ShoppingPage extends GetView<ShoppingController> {
       return ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
+        padding: EdgeInsets.zero,
         itemCount: controller.recommendedProducts.length,
         itemBuilder: (context, index) {
           ProductInfo productInfo = controller.recommendedProducts[index];
