@@ -39,10 +39,8 @@ class ShoppingController extends GetxController {
   }
 
   void _scrollListener() {
-    print("object");
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-      print("asdasd");
       getLatestProducts();
     }
   }

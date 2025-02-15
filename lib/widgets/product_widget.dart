@@ -19,9 +19,9 @@ class ProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final findInCart = cartController.cartItems
-        .firstWhereOrNull((el) => el.id == productInfo.id);
+        .firstWhereOrNull((el) => el.modifilerId == productInfo.modifilerId);
     return Slidable(
-      key: ValueKey(productInfo.id),
+      key: Key(productInfo.modifilerId),
       endActionPane: !isCart || findInCart == null
           ? null
           : ActionPane(
@@ -31,7 +31,7 @@ class ProductWidget extends StatelessWidget {
                   onPressed: (context) =>
                       cartController.deleteItem(productInfo),
                   backgroundColor: Color(0xFFFE4A49),
-                  foregroundColor: Colors.white,
+                  foregroundColor: Get.theme.colorScheme.surface,
                   icon: Icons.delete,
                   label: 'Delete',
                 ),
@@ -89,7 +89,7 @@ class ProductWidget extends StatelessWidget {
 
   Widget _buildCartButton() {
     final findInCart = cartController.cartItems
-        .firstWhereOrNull((el) => el.id == productInfo.id);
+        .firstWhereOrNull((el) => el.modifilerId == productInfo.modifilerId);
     if (cartController.cartItems.isEmpty || findInCart == null) {
       return GestureDetector(
         onTap: () => cartController.addToCart(productInfo),
@@ -102,7 +102,7 @@ class ProductWidget extends StatelessWidget {
           child: Text(
             "Add to cart",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Get.theme.colorScheme.surface),
           ),
         ),
       );
@@ -121,7 +121,7 @@ class ProductWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.w),
             child: Icon(
               Icons.remove,
-              color: Colors.white,
+              color: Get.theme.colorScheme.surface,
               size: 12.w,
             ),
           ),
@@ -139,7 +139,7 @@ class ProductWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.w),
             child: Icon(
               Icons.add,
-              color: Colors.white,
+              color: Get.theme.colorScheme.surface,
               size: 12.w,
             ),
           ),

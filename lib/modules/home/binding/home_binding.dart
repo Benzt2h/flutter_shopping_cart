@@ -7,9 +7,9 @@ class HomeBinding extends Binding {
   @override
   List<Bind> dependencies() {
     return [
+      Bind.put<CartController>(CartController()),
       Bind.put<HomeController>(HomeController()),
       Bind.put<ShoppingController>(ShoppingController()),
-      Bind.put<CartController>(CartController()),
     ];
   }
 }

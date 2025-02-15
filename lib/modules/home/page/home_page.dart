@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:refreshed/refreshed.dart';
+import 'package:shopping_cart/modules/home/controller/home_controller.dart';
 import 'package:shopping_cart/modules/shopping/page/shopping_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
@@ -33,7 +34,7 @@ class HomePage extends StatelessWidget {
               items: navBarConfig.items,
               onItemSelected: (int index) {
                 if (index == 1) {
-                  Get.toNamed('/cart');
+                  controller.routeToCart();
                   return;
                 }
                 navBarConfig.onItemSelected(index);

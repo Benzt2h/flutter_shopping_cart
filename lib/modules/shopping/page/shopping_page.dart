@@ -22,6 +22,7 @@ class ShoppingPage extends GetView<ShoppingController> {
           child: Column(
             children: [
               _buildRecmmend(),
+              SizedBox(height: 20.h),
               _buildLatest(),
             ],
           ),
@@ -84,7 +85,8 @@ class ShoppingPage extends GetView<ShoppingController> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-            child: Text("Refresh", style: TextStyle(color: Colors.white)),
+            child: Text("Refresh",
+                style: TextStyle(color: Get.theme.colorScheme.surface)),
           ),
         ],
       );
@@ -172,7 +174,8 @@ class ShoppingPage extends GetView<ShoppingController> {
                 borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-            child: Text("Refresh", style: TextStyle(color: Colors.white)),
+            child: Text("Refresh",
+                style: TextStyle(color: Get.theme.colorScheme.surface)),
           ),
         ],
       );
