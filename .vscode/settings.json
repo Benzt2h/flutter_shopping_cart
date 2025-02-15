@@ -1,0 +1,46 @@
+{
+  "dart.flutterSdkPath": ".fvm/versions/3.27.1",
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "macros": {
+    "snippetWithDescription": [
+      "editor.action.clipboardCopyAction",
+      "editor.action.insertLineAfter",
+      {
+        "command": "editor.action.insertSnippet",
+        "when": "editorTextFocus",
+        "args": {
+          "snippet": "print('$CLIPBOARD =-----> ${$CLIPBOARD}');$0"
+        }
+      }
+    ]
+  },
+  "dart.flutterHotReloadOnSave": "all",
+  "dart.hotReloadOnSave": "all",
+  "files.autoSave": "off",
+  "files.autoSaveDelay": 500,
+  "svg.preview.background": "transparent",
+  "dart.showTodos": false,
+  "cSpell.words": [
+    "ambiguate",
+    "chewie",
+    "cupertino",
+    "dotenv",
+    "LTRB",
+    "rxdart",
+    "Schyler",
+    "screenutil",
+    "svgs",
+    "Tappable",
+    "Transtation",
+    "vdodownload"
+  ],
+}
