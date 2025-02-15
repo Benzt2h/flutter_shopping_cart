@@ -9,34 +9,36 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PersistentTabView(
-        tabs: [
-          PersistentTabConfig(
-            screen: ShoppingPage(),
-            item: ItemConfig(
-              icon: Icon(Icons.home),
-              title: "Shopping",
+      body: SafeArea(
+        child: PersistentTabView(
+          tabs: [
+            PersistentTabConfig(
+              screen: ShoppingPage(),
+              item: ItemConfig(
+                icon: Icon(Icons.home),
+                title: "Shopping",
+              ),
             ),
-          ),
-          PersistentTabConfig(
-            screen: SizedBox.shrink(),
-            item: ItemConfig(
-              icon: Icon(Icons.shopping_cart),
-              title: "Cart",
+            PersistentTabConfig(
+              screen: SizedBox.shrink(),
+              item: ItemConfig(
+                icon: Icon(Icons.shopping_cart),
+                title: "Cart",
+              ),
             ),
-          ),
-        ],
-        navBarBuilder: (navBarConfig) => Style1BottomNavBar(
-          navBarConfig: NavBarConfig(
-            selectedIndex: navBarConfig.selectedIndex,
-            items: navBarConfig.items,
-            onItemSelected: (int index) {
-              if (index == 1) {
-                Get.toNamed('/cart');
-                return;
-              }
-              navBarConfig.onItemSelected(index);
-            },
+          ],
+          navBarBuilder: (navBarConfig) => Style1BottomNavBar(
+            navBarConfig: NavBarConfig(
+              selectedIndex: navBarConfig.selectedIndex,
+              items: navBarConfig.items,
+              onItemSelected: (int index) {
+                if (index == 1) {
+                  Get.toNamed('/cart');
+                  return;
+                }
+                navBarConfig.onItemSelected(index);
+              },
+            ),
           ),
         ),
       ),

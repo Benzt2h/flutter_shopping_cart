@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 
-class ApiService {
-  late Dio _dio;
+class HttpService {
+  late Dio dio;
 
-  ApiService() {
-    _dio = Dio(
+  HttpService() {
+    dio = Dio(
       BaseOptions(
         baseUrl: "http://localhost:8080",
         connectTimeout: const Duration(seconds: 10),
@@ -12,7 +12,7 @@ class ApiService {
       ),
     );
 
-    _dio.interceptors.add(InterceptorsWrapper(
+    dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         print("📡 Request: ${options.method} ${options.path}");
         return handler.next(options);
@@ -28,16 +28,7 @@ class ApiService {
     ));
   }
 
-  Future<dynamic> getRequest(String endpoint) async {
-    try {
-      Response response = await _dio.get(endpoint);
-      return response.data;
-    } on DioException catch (e) {
-      throw _handleError(e);
-    }
-  }
-
-  Exception _handleError(DioException error) {
+  Exception handleError(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
         return Exception("Connection timed out. Please try again.");
