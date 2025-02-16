@@ -6,6 +6,7 @@ class HttpService {
   HttpService() {
     dio = Dio(
       BaseOptions(
+        //for android emulator use ip ex. http://192.168.1.2:8080
         baseUrl: "http://localhost:8080",
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 10),

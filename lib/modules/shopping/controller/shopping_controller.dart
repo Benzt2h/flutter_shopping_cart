@@ -62,7 +62,7 @@ class ShoppingController extends GetxController {
       isLoadingLatest.value = false;
       isLoadingMoreLatest.value = false;
     } catch (e) {
-      if (latestProducts.isNotEmpty) {
+      if (latestProducts.isEmpty) {
         errorMessageLatest(e.toString());
       }
       Get.snackbar("Error", e.toString());
