@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:refreshed/refreshed.dart';
 import 'package:shopping_cart/models/product_info.dart';
 import 'package:shopping_cart/modules/shopping/controller/shopping_controller.dart';
+import 'package:shopping_cart/widgets/error_refresh_widget.dart';
 import 'package:shopping_cart/widgets/product_loading_widget.dart';
 import 'package:shopping_cart/widgets/product_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -49,7 +50,9 @@ class ShoppingPage extends GetView<ShoppingController> {
   }
 
   Widget _buildLatestProducts() {
-    if (controller.errorMessageLatest.isEmpty) {
+    if (controller.errorMessageLatest.isNotEmpty) {
+      return ErrorRefreshWidget(onRefresh: controller.getLatestProducts);
+    } else {
       return Column(
         children: [
           Skeletonizer(
@@ -84,34 +87,6 @@ class ShoppingPage extends GetView<ShoppingController> {
           )
         ],
       );
-    } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.error_outline, size: 50.w, color: Colors.red),
-          SizedBox(height: 10.h),
-          Text(
-            "Something went wrong",
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 10.h),
-          ElevatedButton(
-            onPressed: () {
-              controller.getLatestProducts();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Get.theme.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-            ),
-            child: Text("Refresh",
-                style: TextStyle(color: Get.theme.colorScheme.surface)),
-          ),
-        ],
-      );
     }
   }
 
@@ -133,7 +108,9 @@ class ShoppingPage extends GetView<ShoppingController> {
   }
 
   Widget _buildRecmmendProducts() {
-    if (controller.errorMessageRecommended.isEmpty) {
+    if (controller.errorMessageRecommended.isNotEmpty) {
+      return ErrorRefreshWidget(onRefresh: controller.getRecommendedProducts);
+    } else {
       return Skeletonizer(
         enabled: controller.isLoadingRecommended.value,
         child: ListView.builder(
@@ -151,34 +128,6 @@ class ShoppingPage extends GetView<ShoppingController> {
             return ProductWidget(productInfo: productInfo);
           },
         ),
-      );
-    } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.error_outline, size: 50.w, color: Colors.red),
-          SizedBox(height: 10.h),
-          Text(
-            "Something went wrong",
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 10.w),
-          ElevatedButton(
-            onPressed: () {
-              controller.getRecommendedProducts();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Get.theme.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-            ),
-            child: Text("Refresh",
-                style: TextStyle(color: Get.theme.colorScheme.surface)),
-          ),
-        ],
       );
     }
   }
