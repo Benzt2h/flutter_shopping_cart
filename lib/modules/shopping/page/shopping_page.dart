@@ -49,20 +49,42 @@ class ShoppingPage extends GetView<ShoppingController> {
   }
 
   Widget _buildLatestProducts() {
-    if (controller.isLoadingLatest.value) {
-      return Skeletonizer(
-        enabled: true,
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          padding: EdgeInsets.zero,
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return ProductLoadingWidget();
-          },
-        ),
+    if (controller.errorMessageLatest.isEmpty) {
+      return Column(
+        children: [
+          Skeletonizer(
+            enabled: controller.isLoadingLatest.value,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: controller.isLoadingLatest.value
+                  ? 5
+                  : controller.latestProducts.length,
+              itemBuilder: (context, index) {
+                if (controller.isLoadingLatest.value) {
+                  return ProductLoadingWidget();
+                }
+                ProductInfo productInfo = controller.latestProducts[index];
+                return ProductWidget(productInfo: productInfo);
+              },
+            ),
+          ),
+          Obx(
+            () => !controller.isLoadingMoreLatest.value
+                ? SizedBox.shrink()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: 5.w),
+                      Text("Loading...")
+                    ],
+                  ),
+          )
+        ],
       );
-    } else if (controller.errorMessageLatest.isNotEmpty) {
+    } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,33 +112,6 @@ class ShoppingPage extends GetView<ShoppingController> {
           ),
         ],
       );
-    } else {
-      return Column(
-        children: [
-          ListView.builder(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            padding: EdgeInsets.zero,
-            itemCount: controller.latestProducts.length,
-            itemBuilder: (context, index) {
-              ProductInfo productInfo = controller.latestProducts[index];
-              return ProductWidget(productInfo: productInfo);
-            },
-          ),
-          Obx(
-            () => !controller.isLoadingMoreLatest.value
-                ? SizedBox.shrink()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(width: 5.w),
-                      Text("Loading...")
-                    ],
-                  ),
-          ),
-        ],
-      );
     }
   }
 
@@ -138,20 +133,26 @@ class ShoppingPage extends GetView<ShoppingController> {
   }
 
   Widget _buildRecmmendProducts() {
-    if (controller.isLoadingRecommended.value) {
+    if (controller.errorMessageRecommended.isEmpty) {
       return Skeletonizer(
-        enabled: true,
+        enabled: controller.isLoadingRecommended.value,
         child: ListView.builder(
           shrinkWrap: true,
           physics: ClampingScrollPhysics(),
           padding: EdgeInsets.zero,
-          itemCount: 5,
+          itemCount: controller.isLoadingRecommended.value
+              ? 5
+              : controller.recommendedProducts.length,
           itemBuilder: (context, index) {
-            return ProductLoadingWidget();
+            if (controller.isLoadingRecommended.value) {
+              return ProductLoadingWidget();
+            }
+            ProductInfo productInfo = controller.recommendedProducts[index];
+            return ProductWidget(productInfo: productInfo);
           },
         ),
       );
-    } else if (controller.errorMessageRecommended.isNotEmpty) {
+    } else {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -178,17 +179,6 @@ class ShoppingPage extends GetView<ShoppingController> {
                 style: TextStyle(color: Get.theme.colorScheme.surface)),
           ),
         ],
-      );
-    } else {
-      return ListView.builder(
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        padding: EdgeInsets.zero,
-        itemCount: controller.recommendedProducts.length,
-        itemBuilder: (context, index) {
-          ProductInfo productInfo = controller.recommendedProducts[index];
-          return ProductWidget(productInfo: productInfo);
-        },
       );
     }
   }
