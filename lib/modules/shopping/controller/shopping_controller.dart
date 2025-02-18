@@ -28,8 +28,9 @@ class ShoppingController extends GetxController {
   Future getRecommendedProducts() async {
     try {
       isLoadingRecommended.value = true;
-      recommendedProducts.value = await productService.getRecommendedProducts();
       errorMessageRecommended("");
+      recommendedProducts.value = await productService.getRecommendedProducts();
+
       isLoadingRecommended.value = false;
     } catch (e) {
       errorMessageRecommended(e.toString());
@@ -49,15 +50,14 @@ class ShoppingController extends GetxController {
     try {
       if (latestProducts.isEmpty) {
         isLoadingLatest.value = true;
+        errorMessageLatest("");
       } else {
         isLoadingMoreLatest.value = true;
       }
-
       Map<String, dynamic> res =
           await productService.getLatestProducts(nextCursor);
       latestProducts.addAll(res['items']);
       nextCursor = res['nextCursor'];
-      errorMessageLatest("");
 
       isLoadingLatest.value = false;
       isLoadingMoreLatest.value = false;
@@ -65,9 +65,11 @@ class ShoppingController extends GetxController {
       if (latestProducts.isEmpty) {
         errorMessageLatest(e.toString());
       }
-      Get.snackbar("Error", e.toString());
       isLoadingLatest.value = false;
-      isLoadingMoreLatest.value = false;
+      Future.delayed(Duration(milliseconds: 500), () {
+        Get.snackbar("Error", e.toString());
+        isLoadingMoreLatest.value = false;
+      });
     }
   }
 }

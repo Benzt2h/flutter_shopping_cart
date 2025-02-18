@@ -102,33 +102,38 @@ class ShoppingPage extends GetView<ShoppingController> {
             ),
           ],
         ),
-        Obx(() => _buildRecmmendProducts()),
+        _buildRecmmendProducts(),
       ],
     );
   }
 
   Widget _buildRecmmendProducts() {
-    if (controller.errorMessageRecommended.isNotEmpty) {
-      return ErrorRefreshWidget(onRefresh: controller.getRecommendedProducts);
-    } else {
-      return Skeletonizer(
-        enabled: controller.isLoadingRecommended.value,
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          padding: EdgeInsets.zero,
-          itemCount: controller.isLoadingRecommended.value
-              ? 5
-              : controller.recommendedProducts.length,
-          itemBuilder: (context, index) {
-            if (controller.isLoadingRecommended.value) {
-              return ProductLoadingWidget();
-            }
-            ProductInfo productInfo = controller.recommendedProducts[index];
-            return ProductWidget(productInfo: productInfo);
-          },
-        ),
-      );
-    }
+    return Obx(
+      () {
+        if (controller.errorMessageRecommended.isNotEmpty) {
+          return ErrorRefreshWidget(
+              onRefresh: controller.getRecommendedProducts);
+        } else {
+          return Skeletonizer(
+            enabled: controller.isLoadingRecommended.value,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: controller.isLoadingRecommended.value
+                  ? 5
+                  : controller.recommendedProducts.length,
+              itemBuilder: (context, index) {
+                if (controller.isLoadingRecommended.value) {
+                  return ProductLoadingWidget();
+                }
+                ProductInfo productInfo = controller.recommendedProducts[index];
+                return ProductWidget(productInfo: productInfo);
+              },
+            ),
+          );
+        }
+      },
+    );
   }
 }
