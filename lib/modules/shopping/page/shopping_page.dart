@@ -44,50 +44,54 @@ class ShoppingPage extends GetView<ShoppingController> {
             ),
           ],
         ),
-        Obx(() => _buildLatestProducts()),
+        _buildLatestProducts(),
       ],
     );
   }
 
   Widget _buildLatestProducts() {
-    if (controller.errorMessageLatest.isNotEmpty) {
-      return ErrorRefreshWidget(onRefresh: controller.getLatestProducts);
-    } else {
-      return Column(
-        children: [
-          Skeletonizer(
-            enabled: controller.isLoadingLatest.value,
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              padding: EdgeInsets.zero,
-              itemCount: controller.isLoadingLatest.value
-                  ? 5
-                  : controller.latestProducts.length,
-              itemBuilder: (context, index) {
-                if (controller.isLoadingLatest.value) {
-                  return ProductLoadingWidget();
-                }
-                ProductInfo productInfo = controller.latestProducts[index];
-                return ProductWidget(productInfo: productInfo);
-              },
-            ),
-          ),
-          Obx(
-            () => !controller.isLoadingMoreLatest.value
-                ? SizedBox.shrink()
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(width: 5.w),
-                      Text("Loading...")
-                    ],
-                  ),
-          )
-        ],
-      );
-    }
+    return Obx(
+      () {
+        if (controller.errorMessageLatest.isNotEmpty) {
+          return ErrorRefreshWidget(onRefresh: controller.getLatestProducts);
+        } else {
+          return Column(
+            children: [
+              Skeletonizer(
+                enabled: controller.isLoadingLatest.value,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: controller.isLoadingLatest.value
+                      ? 5
+                      : controller.latestProducts.length,
+                  itemBuilder: (context, index) {
+                    if (controller.isLoadingLatest.value) {
+                      return ProductLoadingWidget();
+                    }
+                    ProductInfo productInfo = controller.latestProducts[index];
+                    return ProductWidget(productInfo: productInfo);
+                  },
+                ),
+              ),
+              Obx(
+                () => !controller.isLoadingMoreLatest.value
+                    ? SizedBox.shrink()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(width: 5.w),
+                          Text("Loading...")
+                        ],
+                      ),
+              )
+            ],
+          );
+        }
+      },
+    );
   }
 
   Widget _buildRecmmend() {
